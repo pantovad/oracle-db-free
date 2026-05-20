@@ -1,20 +1,20 @@
-# Oracle Database 23c Free - Developer Release
-[Oracle](http://www.oracle.com) Database 23c Free—Developer Release is the same, powerful Oracle Database that businesses throughout the world rely on. It offers a full-featured experience and is packaged for ease of use and simple download—for free.
+# Oracle Database Free
+[Oracle](http://www.oracle.com) Database Free—Developer Release is the same, powerful Oracle Database that businesses throughout the world rely on. It offers a full-featured experience and is packaged for ease of use and simple download—for free. See [Oracle Database Free](https://www.oracle.com/database/free)
 
 ## Getting started
-A Helm chart is used for packaging the deployment yamls to simplify install in Kubernetes. Using [helm-charts/oracle-db](https://github.com/oracle/docker-images/tree/main/OracleDatabase/SingleInstance/helm-charts/oracle-db) as base and modified it for use with Oracle Database 23c Free - Developer Release. 
+A Helm chart is used for packaging the deployment yamls to simplify install in Kubernetes. Using [helm-charts/oracle-db](https://github.com/oracle/docker-images/tree/main/OracleDatabase/SingleInstance/helm-charts/oracle-db) as base and modified it for use with Oracle Database Free. 
 
-Clone the repo and execute the following command to generate oracle-db23c-free-1.0.0.tgz:
+Clone the repo and execute the following command to generate oracle-db-free-1.0.0.tgz:
 
 ```
-$ helm package oracle-db23c-free
+$ helm package oracle-db-free
 ```
 
 ## Introduction
 
-The Oracle Database Chart contains the Oracle Database 23c Free - Developer Release. 
+The Oracle Database Chart contains the Oracle Database Free. 
 
-For more information on Oracle Database 23c Free—Developer Release refer to https://www.oracle.com/database/free/
+For more information on Oracle Database Free Release refer to https://www.oracle.com/database/free/
 
 ## Prerequisites
 
@@ -23,15 +23,15 @@ For more information on Oracle Database 23c Free—Developer Release refer to ht
 
 ## Installing the Chart
 
-To install the chart with the release name `db23cfree`:
+To install the chart with the release name `oracle-db-free`:
 
 Helm 3.x syntax
 ```
-$ helm install db23cfree oracle-db23c-free-1.0.0.tgz
+$ helm install oracle-db-free oracle-db-free-1.0.0.tgz
 ```
 Helm 2.x syntax
 ```
-$ helm install --name db23cfree oracle-db23c-free-1.0.0.tgz
+$ helm install --name oracle-db-free oracle-db-free-1.0.0.tgz
 ```
 
 The command deploys Oracle Database on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
@@ -40,15 +40,15 @@ The command deploys Oracle Database on the Kubernetes cluster in the default con
 
 ## Uninstalling the Chart
 
-To uninstall/delete the `db23cfree` deployment:
+To uninstall/delete the `oracle-db-free` deployment:
 
 Helm 3.x syntax
 ```
-$ helm uninstall db23cfree 
+$ helm uninstall oracle-db-free
 ```
 Helm 2.x syntax
 ```
-$ helm delete db23cfree
+$ helm delete oracle-db-free
 ```
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.
@@ -61,8 +61,8 @@ The following tables lists the configurable parameters of the Oracle  Database c
 | -------------------------------      | -------------------------------            | ---------------------------------------------------------- |
 | oracle_pwd                           | SYS, SYSTEM and PDB_ADMIN password         | Auto generated                                             |
 | oracle_characterset                  | The character set to use                   | AL32UTF8                                                   |
-| persistence.size                     | Size of persistence storage                | 100g                                                       |
-| persistence.storageClass             | Storage Class for PVC                      | oci-bv                                                           |
+| persistence.size                     | Size of persistence storage                | 50g                                                        |
+| persistence.storageClass             | Storage Class for PVC                      | ""                                                         |
 | loadBalService                       | Create a load balancer service instead of NodePort | false                                              |
 | image                                | Image to pull                              | container-registry.oracle.com/database/free:latest |
 | imagePullPolicy                      | Image pull policy                          | Always                                                     |
@@ -79,11 +79,11 @@ Specify each parameter using the `--set key=value[,key=value]` argument to `helm
 
 Helm 3.x syntax
 ```
-$ helm install db23cfree --set oracle_pwd=<your_password> oracle-db23c-free-1.0.0.tgz
+$ helm install oracle-db-free --set oracle_pwd=<your_password> oracle-db-free-1.0.0.tgz
 ```
 Helm 2.x syntax
 ```
-$ helm install --name db23cfree --set oracle_pwd=<your_password> oracle-db23c-free-1.0.0.tgz
+$ helm install --name oracle-db-free --set oracle_pwd=<your_password> oracle-db-free-1.0.0.tgz
 ```
 
 The above command sets the Oracle Database password to <your_password>.
@@ -92,11 +92,11 @@ Alternatively, a YAML file that specifies the values for the above parameters ca
 
 Helm 3.x syntax
 ```
-$ helm install db23cfree -f values.yaml oracle-db23c-free-1.0.0.tgz
+$ helm install oracle-db-free -f values.yaml oracle-db-free-1.0.0.tgz
 ```
 Helm 2.x syntax
 ```
-$ helm install --name db23cfree -f values.yaml oracle-db23c-free-1.0.0.tgz
+$ helm install --name oracle-db-free -f values.yaml oracle-db-free-1.0.0.tgz
 ```
 
 > **Tip**: You can use the default [values.yaml](values.yaml)
@@ -117,14 +117,14 @@ See the [Configuration](#configuration) section to configure the PVC or to disab
 Connecting to the CDB as SYSDBA:
 
 ```
-kubectl exec -it pods/pod-name -n db23c -- sqlplus sys/<your_password>@FREE as sysdba
+kubectl exec -it pods/pod-name -n oracle-db -- sqlplus sys/<your_password>@FREE as sysdba
 ```
 
 Connecting to the PDB as SYSDBA:
 
 ```
-kubectl exec -it pods/pod-name -n db23c -- sqlplus sys/<your_password>@FREEPDB1 as sysdba
+kubectl exec -it pods/pod-name -n oracle-db -- sqlplus sys/<your_password>@FREEPDB1 as sysdba
 ```
 
 
-> Your feedback is important to us! Connect with us if you have any questions or feedback on Oracle Database 23c Free — Developer Release: https://community.oracle.com/hub
+> Your feedback is important to us! Connect with us if you have any questions or feedback on Oracle Database Free: https://community.oracle.com/hub

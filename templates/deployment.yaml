@@ -31,6 +31,7 @@ spec:
       securityContext:
         runAsUser: 54321
         fsGroup: 54321
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
     {{- if or .Values.availabilityDomain .Values.nodeLabels}}
       nodeSelector:
       {{- range $key, $value := .Values.nodeLabels }}
@@ -40,8 +41,22 @@ spec:
         failure-domain.beta.kubernetes.io/zone: "{{ .Values.availabilityDomain }}"
       {{- end }}
     {{- end }}
+      initContainers:
+        - name: oradata-copy
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: {{ .Values.image }}
+          imagePullPolicy: {{ default "IfNotPresent" .Values.imagePullPolicy | quote }}
+          command: ["/bin/sh", "-c", "cp -dR $ORACLE_BASE/oradata/. /oracle_data"]
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: datamount
+              mountPath: /oracle_data
       containers:
         - name: oracle-db
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
           image: {{ .Values.image }}
           imagePullPolicy: {{ default "IfNotPresent" .Values.imagePullPolicy | quote }}
         {{- if .Values.preStopHook }}
@@ -55,10 +70,12 @@ spec:
             - containerPort: 5500
           readinessProbe:
             exec:
-              command: [ "/bin/sh", "-c", "if [ -f $ORACLE_BASE/checkDBLockStatus.sh ]; then $ORACLE_BASE/checkDBLockStatus.sh ; else $ORACLE_BASE/checkDBStatus.sh; fi " ]
-            initialDelaySeconds: 20
-            periodSeconds: 40
-            timeoutSeconds: 20
+              command: [ "/bin/sh", "-c", "$ORACLE_BASE/checkDBStatus.sh" ]
+            initialDelaySeconds: 60
+            periodSeconds: 60
+            timeoutSeconds: 30
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
           {{- if .Values.persistence }}
           volumeMounts:
             - mountPath: /opt/oracle/oradata
