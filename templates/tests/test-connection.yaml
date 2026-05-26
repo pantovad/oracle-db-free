@@ -20,6 +20,13 @@ spec:
     image: {{ .Values.image }}
 {{- include "oracle-db-env" . | indent 4 }}
     command: ["sh"]
-    args: [ "-c", "status=`/bin/echo -en 'set heading off\nset pagesize 0\nselect status from v\\$instance;\nexit\n' | sqlplus -S sys/$ORACLE_PWD@//$SVC_HOST:$SVC_PORT/$ORACLE_SID as sysdba`;cmdret=$?;/bin/echo \"cmdret=$cmdret, status=$status\";if [[ $status == \"OPEN\" ]]; then exit 0; else exit 1;fi " ]
+    args: [ "-c", "status=`/bin/echo -en 'set heading off\nset pagesize 0\nselect status from v\\$instance;\nexit\n' | sqlplus -S sys/$(cat /passwords/oracle_password)@//$SVC_HOST:$SVC_PORT/$ORACLE_SID as sysdba`;cmdret=$?;/bin/echo \"cmdret=$cmdret, status=$status\";if [[ $status == \"OPEN\" ]]; then exit 0; else exit 1;fi " ]
+    volumeMounts:
+      - name: passwords
+        mountPath: "/passwords"
+        readOnly: true
   restartPolicy: Never
-
+  volumes:
+    - name: passwords
+      secret: 
+        secretName: {{ template "fullname" . }}

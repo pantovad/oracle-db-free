@@ -2,7 +2,9 @@
 [Oracle](http://www.oracle.com) Database Free—Developer Release is the same, powerful Oracle Database that businesses throughout the world rely on. It offers a full-featured experience and is packaged for ease of use and simple download—for free. See [Oracle Database Free](https://www.oracle.com/database/free)
 
 ## Getting started
-A Helm chart is used for packaging the deployment yamls to simplify install in Kubernetes. Using [helm-charts/oracle-db](https://github.com/oracle/docker-images/tree/main/OracleDatabase/SingleInstance/helm-charts/oracle-db) as base and modified it for use with Oracle Database Free. 
+A Helm chart is used for packaging the deployment yamls to simplify install in Kubernetes. Using [helm-charts/oracle-db](https://github.com/oracle/docker-images/tree/main/OracleDatabase/SingleInstance/helm-charts/oracle-db) as base and modified it for use with Oracle Database Free.
+The OCI images supported are both official one from Oracle (https://container-registry.oracle.com/database/free) and the one provided by Gerald Venzl project (https://hub.docker.com/r/gvenzl/oracle-free). The Gerald Venzl's one is the defalt ne. The choice of the image is done with the image property in the chart vlues.
+Please check the image docs for the supported configuration options.
 
 Clone the repo and execute the following command to generate oracle-db-free-1.0.0.tgz:
 
@@ -59,16 +61,21 @@ The following tables lists the configurable parameters of the Oracle  Database c
 
 | Parameter                            | Description                                | Default                                                    |
 | -------------------------------      | -------------------------------            | ---------------------------------------------------------- |
-| oracle_pwd                           | SYS, SYSTEM and PDB_ADMIN password         | Auto generated                                             |
-| oracle_characterset                  | The character set to use                   | AL32UTF8                                                   |
+| oracle_database (Gvenzl image)       | Application database (FREEPDB1 if not set) | unset                                                      |
+| oracle_password                      | SYS, SYSTEM and PDB_ADMIN password         | Auto generated                                             |
+| app_user (Gvenzl image)              | Application username                       | free                                                       |
+| app_user_password (Gvenzl image)     | Application user password                  | Auto generated                                             |
+| oracle_characterset (Oracl image)    | The character set used on DB creation      | AL32UTF8                                                   |
+| nls_lang (venzl image)               | The client character set                   | AMERICAN_AMERICA.AL32UTF8                                  |
 | persistence.size                     | Size of persistence storage                | 50g                                                        |
-| persistence.storageClass             | Storage Class for PVC                      | ""                                                         |
+| persistence.storageClass             | Storage Class for PVC                      | "" (use the cluster default)                               |
 | loadBalService                       | Create a load balancer service instead of NodePort | false                                              |
-| image                                | Image to pull                              | container-registry.oracle.com/database/free:latest |
-| imagePullPolicy                      | Image pull policy                          | Always                                                     |
-| enable_archivelog                    | Set true to enable archive log mode when creating the database | false                                                      |
+| image                                | Image to pull                              | gvenzl/oracle-free:latest                                  |
+| imagePullPolicy                      | Image pull policy                          | IfNotPresent                                               |
+| enable_archivelog (Oracl image)      | Set true to enable archive log mode when creating the database | false                                  |
 
-ORACLE_SID and ORACLE_PDB are not configurable for Oracle Database 23c Free - Developer Release.
+ORACLE_SID is not configurable for Oracle Database 23c Free - Developer Release.
+ORACLE_PDB can set to one or more comma separated values in Gvenzl image (use oracle_database value)ij order to create the pluggable databases. If not set the precreated FREEPDB1 delivered with the image is available 
 
 |Environment variable   | Value     |
 |---------------------- | --------- |
@@ -103,7 +110,7 @@ $ helm install --name oracle-db-free -f values.yaml oracle-db-free-1.0.0.tgz
  
  ## Image
  
- You can see more information about the image used on the [Oracle Container Registry](https://container-registry.oracle.com/ords/f?p=113:4:104702792064689:::4:P4_REPOSITORY,AI_REPOSITORY,AI_REPOSITORY_NAME,P4_REPOSITORY_NAME,P4_EULA_ID,P4_BUSINESS_AREA_ID:1863,1863,Oracle%20Database%20Free,Oracle%20Database%20Free,1,0&cs=3jiKP0A-IVI1HxQG6noqQoae6RbUZUIgcuJRn1nq4dff0fS68RJKgmKFF5xxXSsZGcIk0q4qayORPDGMk6LHQgg) page.
+ You can see more information about the image used on the [Oracle Container Registry](https://www.oracle.com/database/free/) page.
 
 ## Persistence
 

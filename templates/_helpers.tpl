@@ -27,18 +27,21 @@ env:
   - name: SVC_PORT
     value: "1521"
   - name: ORACLE_SID
-    value: {{ default "ORCLCDB" .Values.oracle_sid | quote }}
-  - name: ORACLE_PDB
-    value: {{ default "ORCLPDB1" .Values.oracle_pdb | quote }}
-  - name: ORACLE_PWD
-    valueFrom:
-      secretKeyRef:
-        name: {{ template "fullname" . }}
-        key: oracle_pwd
+    value: "FREE"
+  - name: ORACLE_DATABASE
+    value: {{ .Values.oracle_database | quote }}
+  - name: ORACLE_PASSWORD_FILE
+    value: /passwords/oracle_password
+  - name: APP_USER
+    value: {{ .Values.app_user | quote }}
+  - name: APP_USER_PASSWORD_FILE
+    value: /passwords/app_user_password
+  - name: NLS_LANG
+    value: {{ .Values.nls_lang | quote }}
   - name: ORACLE_CHARACTERSET
-    value: {{ default "ORCLPDB1" .Values.oracle_characterset | quote }}
+    value: {{ .Values.oracle_characterset | quote }}
   - name: ORACLE_EDITION
-    value: {{ default "enterprise" .Values.oracle_edition | quote }}
+    value: {{ .Values.oracle_edition | quote }}
   - name: ENABLE_ARCHIVELOG
     value: {{ default false .Values.enable_archivelog | quote}}
 {{- end }}

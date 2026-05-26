@@ -5,7 +5,7 @@ apiVersion: v1
 description: Oracle Database Server
 home: http://www.oracle.com
 name: oracle-db-free
-version: 1.0.6
+version: 2.0.0
 keywords:
 - oracle
 - database
