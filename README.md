@@ -3,7 +3,7 @@
 
 ## Getting started
 A Helm chart is used for packaging the deployment yamls to simplify install in Kubernetes. Using [helm-charts/oracle-db](https://github.com/oracle/docker-images/tree/main/OracleDatabase/SingleInstance/helm-charts/oracle-db) as base and modified it for use with Oracle Database Free.
-The OCI images supported are both official one from Oracle (https://container-registry.oracle.com/database/free) and the one provided by Gerald Venzl project (https://hub.docker.com/r/gvenzl/oracle-free). The Gerald Venzl's one is the defalt ne. The choice of the image is done with the image property in the chart vlues.
+The OCI images supported are both official one from Oracle (https://container-registry.oracle.com/database/free) and the one provided by Gerald Venzl project (https://hub.docker.com/r/gvenzl/oracle-free). The Gerald Venzl's one is the defalt one. The choice of the image is done with the image property in the chart values.
 Please check the image docs for the supported configuration options.
 
 Clone the repo and execute the following command to generate oracle-db-free-1.0.0.tgz:
@@ -65,17 +65,17 @@ The following tables lists the configurable parameters of the Oracle  Database c
 | oracle_password                      | SYS, SYSTEM and PDB_ADMIN password         | Auto generated                                             |
 | app_user (Gvenzl image)              | Application username                       | free                                                       |
 | app_user_password (Gvenzl image)     | Application user password                  | Auto generated                                             |
-| oracle_characterset (Oracl image)    | The character set used on DB creation      | AL32UTF8                                                   |
-| nls_lang (venzl image)               | The client character set                   | AMERICAN_AMERICA.AL32UTF8                                  |
+| oracle_characterset (Oracle image)   | The character set used on DB creation      | AL32UTF8                                                   |
+| nls_lang (Gvenzl image)              | The client character set                   | AMERICAN_AMERICA.AL32UTF8                                  |
 | persistence.size                     | Size of persistence storage                | 50g                                                        |
 | persistence.storageClass             | Storage Class for PVC                      | "" (use the cluster default)                               |
 | loadBalService                       | Create a load balancer service instead of NodePort | false                                              |
 | image                                | Image to pull                              | gvenzl/oracle-free:latest                                  |
 | imagePullPolicy                      | Image pull policy                          | IfNotPresent                                               |
-| enable_archivelog (Oracl image)      | Set true to enable archive log mode when creating the database | false                                  |
+| enable_archivelog (Oracleimage)      | Set true to enable archive log mode when creating the database | false                                  |
 
 ORACLE_SID is not configurable for Oracle Database 23c Free - Developer Release.
-ORACLE_PDB can set to one or more comma separated values in Gvenzl image (use oracle_database value)ij order to create the pluggable databases. If not set the precreated FREEPDB1 delivered with the image is available 
+ORACLE_PDB can be set to one or more comma separated values in Gvenzl image (use oracle_database value) in order to create the pluggable databases. If it is not set the precreated FREEPDB1 delivered with the image is available.
 
 |Environment variable   | Value     |
 |---------------------- | --------- |
