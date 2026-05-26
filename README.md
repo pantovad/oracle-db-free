@@ -12,7 +12,7 @@ Clone the repo and execute the following command to generate oracle-db-free-1.0.
 $ helm package oracle-db-free
 ```
 
-## Introduction
+## Introductionv
 
 The Oracle Database Chart contains the Oracle Database Free. 
 
@@ -72,10 +72,10 @@ The following tables lists the configurable parameters of the Oracle  Database c
 | loadBalService                       | Create a load balancer service instead of NodePort | false                                              |
 | image                                | Image to pull                              | gvenzl/oracle-free:latest                                  |
 | imagePullPolicy                      | Image pull policy                          | IfNotPresent                                               |
-| enable_archivelog (Oracleimage)      | Set true to enable archive log mode when creating the database | false                                  |
+| enable_archivelog (Oracle image)     | Set true to enable archive log mode when creating the database | false                                  |
 
 ORACLE_SID is not configurable for Oracle Database 23c Free - Developer Release.
-ORACLE_PDB can be set to one or more comma separated values in Gvenzl image (use oracle_database value) in order to create the pluggable databases. If it is not set the precreated FREEPDB1 delivered with the image is available.
+Precreated FREEPDB1 database is delivered with the image. If ORACLE_PDB is set to one or more comma separated values (applicable for Gvenzl image, use oracle_database chart value to set the ORACLE_PDB variable) the named pluggable databases would be created.
 
 |Environment variable   | Value     |
 |---------------------- | --------- |
